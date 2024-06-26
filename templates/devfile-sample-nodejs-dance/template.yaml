@@ -113,6 +113,13 @@ spec:
           ui:options:
             rows: 5
           ui:help: "This will be the prefix of the following three namespaces for deployment: <namespace>-development, <namespace>-stage, <namespace>-prod"
+        deployMethod:
+          title: Deployment Method
+          type: string
+          enum:
+            - Openshift
+            - Podman Desktop (Local)
+          defaut: Openshift
   # These steps are executed in the scaffolder backend, using data that we gathered
   # via the parameters above.
   steps:
@@ -256,6 +263,7 @@ spec:
     - id: create-argocd-resources
       name: Create ArgoCD Resources
       action: argocd:create-resources
+      if: ${{ parameters.deployMethod === 'Openshift' }}
       input:
         appName: ${{ parameters.name }}-app-of-apps
         # name set in rhdh config

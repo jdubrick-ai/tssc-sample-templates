@@ -75,12 +75,12 @@ To update the templates from these or any new samples you update the list of imp
 
 ### MacOS 
 
-Due to differences between Linux and MacOS, the GNU version of `sed` is required to be installed.
+Due to differences between Linux and MacOS, the GNU version of `gsed` is required to be installed.
 
 ```
-brew install gnu-sed
+brew install gnu-gsed
 ```
 After this, alter PATH. For example, add the following line to your `~/.bash_profile`:
 ```
-export PATH="/opt/homebrew/opt/gnu-sed/libexec/gnubin:$PATH"
+export PATH="/opt/homebrew/opt/gnu-gsed/libexec/gnubin:$PATH"
 ```

@@ -38,14 +38,14 @@ cp -r $DEST/content/README.md  $DEST/content/docs/source-component.md
 cp -r $ROOT_DIR/skeleton/source-repo/.tekton/README.md  $DEST/content/docs/pipelines.md
 
  
-sed -i "s!sed.edit.NAME!$APP_NAME!g" $DEST/template.yaml
-sed -i "s!sed.edit.TITLE!$APP_DISPLAY_NAME!g" $DEST/template.yaml
-sed -i "s!sed.edit.DESCRIPTION!$APP_DESC!g" $DEST/template.yaml
-sed -i "s!sed.edit.APPTAGS!$APP_TAGS!g" $DEST/template.yaml
-sed -i "s!sed.edit.CATALOG_DESCRIPTION!Secure Supply Chain Example for $APP_DESC!g" $DEST/template.yaml
-sed -i "s!sed.edit.DOCKERFILE!$DOCKER_FILE!g" $DEST/template.yaml
-sed -i "s!sed.edit.BUILDCONTEXT!$BUILD_CONTEXT!g" $DEST/template.yaml
-sed -i "s!sed.edit.IMAGEPORT!$IMAGE_PORT!g" $DEST/template.yaml
+gsed -i "s!gsed.edit.NAME!$APP_NAME!g" $DEST/template.yaml
+gsed -i "s!gsed.edit.TITLE!$APP_DISPLAY_NAME!g" $DEST/template.yaml
+gsed -i "s!gsed.edit.DESCRIPTION!$APP_DESC!g" $DEST/template.yaml
+gsed -i "s!gsed.edit.APPTAGS!$APP_TAGS!g" $DEST/template.yaml
+gsed -i "s!gsed.edit.CATALOG_DESCRIPTION!Secure Supply Chain Example for $APP_DESC!g" $DEST/template.yaml
+gsed -i "s!gsed.edit.DOCKERFILE!$DOCKER_FILE!g" $DEST/template.yaml
+gsed -i "s!gsed.edit.BUILDCONTEXT!$BUILD_CONTEXT!g" $DEST/template.yaml
+gsed -i "s!gsed.edit.IMAGEPORT!$IMAGE_PORT!g" $DEST/template.yaml
 
 source $ROOT_DIR/properties
 cat $DEST/template.yaml | envsubst > $DEST/new-template.yaml

@@ -114,7 +114,7 @@ spec:
             rows: 5
           ui:help: "This will be the prefix of the following three namespaces for deployment: <namespace>-development, <namespace>-stage, <namespace>-prod"
         deployMethod:
-          title: Deployment location
+          title: Deployment Method
           type: string
           enum:
             - Openshift
@@ -257,7 +257,6 @@ spec:
     - id: register-gitops
       name: Register Gitops
       action: catalog:register
-      if: ${{ parameters.deployMethod === 'Openshift' }}
       input:
         repoContentsUrl: ${{ steps['publish-github-gitops'].output.repoContentsUrl if steps['publish-github-gitops'].output else steps['publish-gitlab-gitops'].output.repoContentsUrl }}
         catalogInfoPath: '/catalog-info.yaml'
@@ -278,12 +277,10 @@ spec:
       - title: Source Repository
         url: ${{ steps['publish-github'].output.remoteUrl if steps['publish-github'].output else steps['publish-gitlab'].output.remoteUrl }}
       - title: GitOps Repository
-        if: ${{ parameters.deployMethod === 'Openshift' }}
         url: ${{ steps['publish-github-gitops'].output.remoteUrl if steps['publish-github-gitops'].output else steps['publish-gitlab-gitops'].output.remoteUrl }}
       - title: Open Component in catalog
         icon: catalog
         entityRef: ${{ steps['register'].output.entityRef }}
       - title: Open GitOps Resource in catalog
-        if: ${{ parameters.deployMethod === 'Openshift' }}
         icon: catalog
         entityRef: ${{ steps['register-gitops'].output.entityRef }}

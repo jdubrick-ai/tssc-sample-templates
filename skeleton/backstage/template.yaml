@@ -2,10 +2,10 @@ apiVersion: scaffolder.backstage.io/v1beta3
 # https://backstage.io/docs/features/software-catalog/descriptor-format#kind-template
 kind: Template
 metadata:
-  name: sed.edit.NAME
-  title:  sed.edit.TITLE
-  description: sed.edit.DESCRIPTION 
-  tags: sed.edit.APPTAGS
+  name: gsed.edit.NAME
+  title:  gsed.edit.TITLE
+  description: gsed.edit.DESCRIPTION 
+  tags: gsed.edit.APPTAGS
 spec:
   type: service
   # These parameters are used to generate the input form in the frontend, and are
@@ -113,6 +113,13 @@ spec:
           ui:options:
             rows: 5
           ui:help: "This will be the prefix of the following three namespaces for deployment: <namespace>-development, <namespace>-stage, <namespace>-prod"
+        deployMethod:
+          title: Deployment Method
+          type: string
+          enum:
+            - Openshift
+            - Podman Desktop (Local)
+          defaut: Openshift
   # These steps are executed in the scaffolder backend, using data that we gathered
   # via the parameters above.
   steps:
@@ -138,12 +145,12 @@ spec:
         values:
           name: ${{ parameters.name }}
           namespace: ${{ parameters.namespace }}
-          description: sed.edit.CATALOG_DESCRIPTION 
-          dockerfile: sed.edit.DOCKERFILE
-          buildContext: sed.edit.BUILDCONTEXT
+          description: gsed.edit.CATALOG_DESCRIPTION 
+          dockerfile: gsed.edit.DOCKERFILE
+          buildContext: gsed.edit.BUILDCONTEXT
           gitopsSecretName: ${{ 'gitops-auth-secret' if parameters.hostType === 'GitHub' else 'gitlab-auth-secret' }}
           image: '${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}'
-          tags: 'sed.edit.APPTAGS'
+          tags: 'gsed.edit.APPTAGS'
           owner: ${{ parameters.owner }} 
           repoSlug: '${{ parameters.imageOrg }}/${{ parameters.imageName }}'
           defaultBranch: ${{ parameters.branch }} 
@@ -194,7 +201,7 @@ spec:
           image: quay.io/redhat-appstudio/dance-bootstrap-app:latest # bootstrap app image as placeholder
           # actual src image, should be used by tekton PR pipeline to update the image in gitops repo
           srcImage: '${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}'
-          port: sed.edit.IMAGEPORT
+          port: gsed.edit.IMAGEPORT
           argoNS: ${ARGOCD__DEFAULT__NAMESPACE}
           argoProject: ${ARGOCD__DEFAULT__PROJECT}
           secretRef: ${{ parameters.hostType === 'GitLab' }}
@@ -256,6 +263,7 @@ spec:
     - id: create-argocd-resources
       name: Create ArgoCD Resources
       action: argocd:create-resources
+      if: ${{ parameters.deployMethod === 'Openshift' }}
       input:
         appName: ${{ parameters.name }}-app-of-apps
         # name set in rhdh config

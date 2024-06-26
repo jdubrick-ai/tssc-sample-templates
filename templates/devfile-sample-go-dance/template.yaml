@@ -140,6 +140,7 @@ spec:
     - id: fetch-skeleton
       name: Fetch Skeleton
       action: fetch:template
+      if: ${{ parameters.deployMethod === 'Openshift' }}
       input:
         url: ../../skeleton/source-repo
         values:
@@ -154,6 +155,12 @@ spec:
           owner: ${{ parameters.owner }} 
           repoSlug: '${{ parameters.imageOrg }}/${{ parameters.imageName }}'
           defaultBranch: ${{ parameters.branch }} 
+    - id: fetch-skeleton-local
+      name: Fetch Skeleton
+      action: fetch:template
+      if: ${{ parameters.deployMethod !== 'Openshift' }}
+      input:
+        url: ../../skeleton/source-repo/local-deploy
     # This action creates a new GitHub repository and publishes the files in the workspace directory to the repository.
     - id: publish-github
       name: Publish Repository to GitHub
